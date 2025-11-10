@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import './ProductList.css'
 import CartItem from './CartItem';
+import { useSelector,useDispatch } from 'react-redux';
+import { addItem } from './CartSlice';
 function ProductList({ onHomeClick }) {
     const [showCart, setShowCart] = useState(false);
     const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
+
+    const [addedToCart, setAddedToCart] = useState({});
+    const dispatch = useDispatch();
+
 
     const plantsArray = [
         {
@@ -244,7 +250,7 @@ function ProductList({ onHomeClick }) {
     };
     const handlePlantsClick = (e) => {
         e.preventDefault();
-        setShowPlants(true); // Set showAboutUs to true when "About Us" link is clicked
+        f(true); // Set showAboutUs to true when "About Us" link is clicked
         setShowCart(false); // Hide the cart when navigating to About Us
     };
 
@@ -252,6 +258,14 @@ function ProductList({ onHomeClick }) {
         e.preventDefault();
         setShowCart(false);
     };
+    const handleAddToCart = (product) => {
+        dispatch(addItem(product)); // Dispatch the action to add the product to the cart (Redux action)
+      
+        setAddedToCart((prevState) => ({ // Update the local state to reflect that the product has been added
+          ...prevState, // Spread the previous state to retain existing entries
+          [product.name]: true, // Set the current product's name as a key with value 'true' to mark it as added
+        }));
+      };
     return (
         <div>
             <div className="navbar" style={styleObj}>
@@ -274,7 +288,28 @@ function ProductList({ onHomeClick }) {
             </div>
             {!showCart ? (
                 <div className="product-grid">
-
+                    {plantsArray.map((category,index) => (
+                        <div key={index}>
+                            <h1>
+                                <div>{category.category}</div>
+                            </h1>
+                            <div className='product-list'>
+                                {category.plants.map((plant,plantIndex)=> (
+                                    <div className='product-card' key={plantIndex}>
+                                        <div className='product-title'>{plant.name}</div>
+                                        <img
+                                          className='product-image'
+                                          src= {plant.image}
+                                          alt= {plant.name}
+                                        />
+                                        <div className='product-price'>{plant.cost}</div>
+                                        <div className='product-description'>{plant.description}</div>
+                                        <button className='product-button' onClick={() => handleAddToCart(plant)}>Add To Cart</button>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    ))}                 
 
                 </div>
             ) : (
