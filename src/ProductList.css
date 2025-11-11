@@ -58,7 +58,9 @@ body {
     align-items: center;
     justify-content: center;
 }
-
+.product-category{
+    text-align: center;
+}
 /* Product Card */
 .product-card {
     flex: 0 0 calc(33.33% - 20px); /* Adjust width for 3 cards per row with 20px gap */
@@ -165,11 +167,12 @@ body {
     display: flex;
 }
 .cart_quantity_count{
-    margin-top: 16px;
+    /* margin-top: 16px; */
     /* background-color: red; */
     margin-left: 27px;
     position: absolute;
-    font-size: 29px;
+    font-size: 33px;
+    top: 29px;
 
 }
 .plantname_heading{
